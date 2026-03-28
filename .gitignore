@@ -1,0 +1,11 @@
+*.pyc
+
+*.egg-info/
+
+.vscode/
+
+dist/
+
+build/
+
+.venv/
