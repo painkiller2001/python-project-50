@@ -18,3 +18,4 @@ packages = ["gen_diff"]
 [project.scripts]
 gendiff = "gen_diff.scripts.gen_diff:main"
 "gendiff -h" = "gen_diff.scripts.gen_diff:get_reference_information"
+parser = "gen_diff.scripts.gen_diff_parser:parser"
