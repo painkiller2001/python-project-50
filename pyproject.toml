@@ -17,4 +17,3 @@ packages = ["gen_diff"]
 
 [project.scripts]
 gendiff = "gen_diff.scripts.gen_diff:main"
-parser = "gen_diff.scripts.gen_diff_parser:data_parser"
