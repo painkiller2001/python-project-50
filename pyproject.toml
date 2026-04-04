@@ -15,5 +15,11 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["gen_diff"]
 
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "ruff>=0.15.9",
+]
+
 [project.scripts]
 gendiff = "gen_diff.scripts.gen_diff:main"
