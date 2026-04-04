@@ -1,6 +1,5 @@
-import argparse
 from gen_diff.cli import welcome_user
-from .parser import data_parser
+from .parser import data_parser, arg_parser
 
 
 STORAGE_LINK = 'C:/Users/MSI/python-project-50/gen_diff/storage/'
@@ -12,17 +11,6 @@ def main():
 
 def get_reference_information():
     ...
-
-
-def arg_parser():
-
-    arg_parser = argparse.ArgumentParser(description="Compares two configuration files and shows a difference.")
-    arg_parser.add_argument("first_file")
-    arg_parser.add_argument("second_file")
-    args = arg_parser.parse_args()
-    
-    return args.first_file, args.second_file
-
 
 def generate_diff():
 
