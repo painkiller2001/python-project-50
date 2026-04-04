@@ -1,7 +1,7 @@
-from gen_diff.diff.gendiff import main, get_reference_information
+from gen_diff.diff.gendiff import main, generate_diff
 
 def main():
-    get_reference_information()
+    generate_diff()
 
 if __name__ == "__main__":
     main()
