@@ -17,31 +17,26 @@ def generate_diff():
     data_file1, data_file2 = arg_parser()
 
 
-    default_path1 = f'{STORAGE_LINK}{data_file1}'
-    default_path2 = f'{STORAGE_LINK}{data_file2}'
+    default_path1, default_path2 = f'{STORAGE_LINK}{data_file1}', f'{STORAGE_LINK}{data_file2}'
 
     parsed_data1, parsed_data2 = data_parser(default_path1, default_path2)
 
     result = {}
 
-    sorted_data_file1 = dict(sorted(parsed_data1.items()))
-    sorted_data_file2 = dict(sorted(parsed_data2.items()))
+    common_unique_keys = sorted(tuple(set(list(parsed_data1.keys()) + list(parsed_data2.keys()))))
 
-    for key, value in sorted_data_file1.items():
-        if key not in sorted_data_file2:
-            result[f'- {key}'] = str(value).lower()
-        if key in sorted_data_file2 and sorted_data_file1[key] == sorted_data_file2[key]:
-            result[f'  {key}'] = str(value).lower()
-        if key in sorted_data_file2 and sorted_data_file1[key] != sorted_data_file2[key]:
-            result[f'- {key}'] = str(value).lower()
-            result[f'+ {key}'] = str(sorted_data_file2[key]).lower()
-
-    for key, value in sorted_data_file2.items():
-        if f'  {key}' in result:
-            continue
-        else:
-            result[f'+ {key}'] = str(value).lower()
-        
+    for key in common_unique_keys:
+        if key in parsed_data1 and key not in parsed_data2:
+            result[f'- {key}'] = str(parsed_data1[key]).lower()
+        if key in parsed_data2 and key not in parsed_data1:
+            result[f'+ {key}'] = str(parsed_data2[key]).lower()
+        if key in parsed_data2 and key in parsed_data1:
+            if parsed_data1[key] == parsed_data2[key]:    
+                result[f'  {key}'] = str(parsed_data2[key]).lower() 
+            else:
+                result[f'- {key}'] = str(parsed_data1[key]).lower()
+                result[f'+ {key}'] = str(parsed_data2[key]).lower()
+            
     formatted_result = '\n'.join(f"{key}: {value}" for key, value in result.items())
 
     print(f'''
