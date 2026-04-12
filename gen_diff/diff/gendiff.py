@@ -1,8 +1,9 @@
+from pathlib import Path
 from gen_diff.cli import welcome_user
 from .parser import data_parser, arg_parser
 
 
-STORAGE_LINK = 'C:/Users/MSI/python-project-50/gen_diff/storage/'
+STORAGE_LINK = Path(__file__).parent.parent / 'storage'
 
 
 def main():
@@ -17,9 +18,11 @@ def generate_diff():
     data_file1, data_file2 = arg_parser()
 
 
-    default_path1, default_path2 = f'{STORAGE_LINK}{data_file1}', f'{STORAGE_LINK}{data_file2}'
+    default_path1 = Path(data_file1) if Path(data_file1).is_absolute() else STORAGE_LINK / data_file1
+    default_path2 = Path(data_file2) if Path(data_file2).is_absolute() else STORAGE_LINK / data_file2
 
-    parsed_data1, parsed_data2 = data_parser(default_path1, default_path2)
+
+    parsed_data1, parsed_data2 = data_parser(str(default_path1), str(default_path2))
 
     result = {}
 
