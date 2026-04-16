@@ -1,11 +1,12 @@
-import json
 # import yaml
 import argparse
+import json
 
 
 def _read_json(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return json.load(file)
+
 
 def data_parser(file_path1, file_path2):
     try:
@@ -14,6 +15,7 @@ def data_parser(file_path1, file_path2):
         return data1, data2
     except FileNotFoundError:
         print('Invalid file path!')
+
 
 def arg_parser():
 

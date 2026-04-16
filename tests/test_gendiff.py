@@ -1,10 +1,6 @@
-from gen_diff.diff.gendiff import generate_diff
-import pytest
-import json
-import tempfile
-import os
 from pathlib import Path
 
+from gen_diff.diff.gendiff import generate_diff
 
 TEST_DATA_DIR = Path(__file__).parent / 'test_data'
 
@@ -29,6 +25,7 @@ def test_generate_diff_basic():
 '''
         
     assert result.strip() == expected.strip()
+
 
 def test_generate_diff_correct_result_type():
 
