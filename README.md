@@ -22,4 +22,7 @@ Then, make sure the source files are in the project's directory 'STORAGE'.
 
 #  Example:
 
-<a href="https://asciinema.org/a/pD34PAYqx8BZ9Csa" target="_blank"><img src="https://asciinema.org/a/pD34PAYqx8BZ9Csa.svg" /></a>
+`comparing of .json format`          : <a href="https://asciinema.org/a/pD34PAYqx8BZ9Csa" target="_blank"><img src="https://asciinema.org/a/pD34PAYqx8BZ9Csa.svg" /></a>
+
+`comparing of .yaml format`          : <a href="https://asciinema.org/a/9WcCIQx0ElRF7Ouw" target="_blank"><img src="https://asciinema.org/a/9WcCIQx0ElRF7Ouw.svg" /></a>
+
