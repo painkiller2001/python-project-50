@@ -1,20 +1,39 @@
-# import yaml
 import argparse
 import json
+from pathlib import Path
+
+import yaml
 
 
 def _read_json(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return json.load(file)
+    
+    
+def _read_yaml(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return yaml.safe_load(file)
+
+
+FORMAT_FUNC = {'.json': _read_json,
+               '.yml': _read_yaml,
+               '.yaml': _read_yaml
+                }
 
 
 def data_parser(file_path1, file_path2):
+    result = []
     try:
-        data1 = _read_json(file_path1)
-        data2 = _read_json(file_path2)
+        for arg in [file_path1, file_path2]:
+            result.append(FORMAT_FUNC[Path(arg).suffix](arg))                
+        data1, data2 = result
         return data1, data2
     except FileNotFoundError:
         print('Invalid file path!')
+        return None, None
+    except KeyError:
+        print('Unsupported file format! Use .json, .yml or .yaml')
+        return None, None
 
 
 def arg_parser():
