@@ -28,32 +28,65 @@ def generate_diff(data_file1=None, data_file2=None, storage=None):
 
     parsed_data1, parsed_data2 = data_parser(str(default_path1), str(default_path2))
 
-    result = {}
+    diff = build_diff(parsed_data1, parsed_data2)
 
-    common_unique_keys = sorted(tuple(set(list(parsed_data1.keys()) + list(parsed_data2.keys()))))
+    result = format_stylish(diff)
 
-    for key in common_unique_keys:
-        if key in parsed_data1 and key not in parsed_data2:
-            result[f'- {key}'] = str(parsed_data1[key]).lower()
-        if key in parsed_data2 and key not in parsed_data1:
-            result[f'+ {key}'] = str(parsed_data2[key]).lower()
-        if key in parsed_data2 and key in parsed_data1:
-            if parsed_data1[key] == parsed_data2[key]:    
-                result[f'  {key}'] = str(parsed_data2[key]).lower() 
-            else:
-                result[f'- {key}'] = str(parsed_data1[key]).lower()
-                result[f'+ {key}'] = str(parsed_data2[key]).lower()
-            
-    formatted_result = '\n'.join(f"{key}: {value}" for key, value in result.items())
+    print(f"{{\n{result}\n}}")
 
-    print(f'''
-{{
-{formatted_result}
-}}
-        ''')
+    return f"{{\n{result}\n}}"
+
+
+def build_diff(dict1, dict2):
+    all_keys = sorted(set(dict1.keys()) | set(dict2.keys()))
+    result = []
     
-    return f'''
-{{
-{formatted_result}
-}}
-        '''
+    for key in all_keys:
+        if key not in dict1:
+            result.append({'key': key, 'type': 'added', 'value': dict2[key]})
+        elif key not in dict2:
+            result.append({'key': key, 'type': 'removed', 'value': dict1[key]})
+        elif dict1[key] == dict2[key]:
+            result.append({'key': key, 'type': 'unchanged', 'value': dict1[key]})
+        else:
+            if isinstance(dict1[key], dict) and isinstance(dict2[key], dict):
+                result.append({
+                    'key': key,
+                    'type': 'nested',
+                    'children': build_diff(dict1[key], dict2[key])
+                })
+            else:
+                result.append({
+                    'key': key, 
+                    'type': 'changed',
+                    'old_value': dict1[key], 
+                    'new_value': dict2[key]
+                })
+    
+    return result
+
+
+def format_stylish(diff, step=0):
+    indent = '    ' * step
+    lines = []
+    
+    for node in diff:
+        if node['type'] == 'nested':
+            lines.append(f"{indent}  {node['key']}: {{")
+            lines.append(format_stylish(node['children'], step + 1))
+            lines.append(f"{indent}  }}")
+        
+        elif node['type'] == 'changed':
+            lines.append(f"{indent}- {node['key']}: {node['old_value']}")
+            lines.append(f"{indent}+ {node['key']}: {node['new_value']}")
+        
+        elif node['type'] == 'added':
+            lines.append(f"{indent}+ {node['key']}: {node['value']}")
+        
+        elif node['type'] == 'removed':
+            lines.append(f"{indent}- {node['key']}: {node['value']}")
+        
+        elif node['type'] == 'unchanged':
+            lines.append(f"{indent}  {node['key']}: {node['value']}")
+    
+    return '\n'.join(lines)
