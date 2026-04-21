@@ -15,12 +15,12 @@ def test_generate_diff_basic_json():
     result = generate_diff(file1, file2, TEST_DATA_DIR)
     
     expected = '''{
-- follow: false
-  host: hexlet.io
-- proxy: 123.234.53.22
-- timeout: 50
-+ timeout: 20
-+ verbose: true
+  - follow: false
+    host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50
+  + timeout: 20
+  + verbose: true
 }
 '''
         
@@ -63,12 +63,12 @@ def test_generate_diff_basic_yaml():
     result = generate_diff(file1, file2, TEST_DATA_DIR)
     
     expected = '''{
-- follow: false
-  host: hexlet.io
-- proxy: 123.234.53.22
-- timeout: 50
-+ timeout: 20
-+ verbose: true
+  - follow: false
+    host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50
+  + timeout: 20
+  + verbose: true
 }
 '''
         
@@ -99,3 +99,119 @@ def test_generate_diff_other_els_or_el_is_absent_yaml():
     assert '- timeout: 50' in result
     assert '+ timeout: 20' in result
     assert '- follow: false' in result
+
+
+def test_generate_diff_complicated_json():
+
+    # tests of the correct sorted order of all elements
+
+    file1 = 'test_data_file5.json'
+    file2 = 'test_data_file6.json'
+    
+    result = generate_diff(file1, file2, TEST_DATA_DIR)
+    
+    expected = '''{
+    common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+        setting6: {
+            doge: {
+              - wow:
+              + wow: so much
+            }
+            key: value
+          + ops: vops
+        }
+    }
+    group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: {
+            key: value
+        }
+      + nest: str
+    }
+  - group2: {
+        abc: 12345
+        deep: {
+            id: 45
+        }
+    }
+  + group3: {
+        deep: {
+            id: {
+                number: 45
+            }
+        }
+        fee: 100500
+    }
+}
+'''
+
+    assert result.strip() == expected.strip()
+
+
+def test_generate_diff_complicated_yaml():
+
+    # tests of the correct sorted order of all elements
+
+    file1 = 'test_data_file5.yml'
+    file2 = 'test_data_file6.yml'
+    
+    result = generate_diff(file1, file2, TEST_DATA_DIR)
+    
+    expected = '''{
+    common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+        setting6: {
+            doge: {
+              - wow:
+              + wow: so much
+            }
+            key: value
+          + ops: vops
+        }
+    }
+    group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: {
+            key: value
+        }
+      + nest: str
+    }
+  - group2: {
+        abc: 12345
+        deep: {
+            id: 45
+        }
+    }
+  + group3: {
+        deep: {
+            id: {
+                number: 45
+            }
+        }
+        fee: 100500
+    }
+}
+'''
+
+    assert result.strip() == expected.strip()

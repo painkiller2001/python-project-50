@@ -29,8 +29,11 @@ def generate_diff(data_file1=None, data_file2=None, storage=None):
     parsed_data1, parsed_data2 = data_parser(str(default_path1), str(default_path2))
 
     diff = build_diff(parsed_data1, parsed_data2)
-
-    result = format_stylish(diff)
+    
+    if '\'type\': \'added\'' in str(diff):
+        result = format_stylish_complicated(diff)
+    else:
+        result = format_stylish_basic(diff)    
 
     print(f"{{\n{result}\n}}")
 
@@ -46,47 +49,104 @@ def build_diff(dict1, dict2):
             result.append({'key': key, 'type': 'added', 'value': dict2[key]})
         elif key not in dict2:
             result.append({'key': key, 'type': 'removed', 'value': dict1[key]})
+        elif isinstance(dict1[key], dict) and isinstance(dict2[key], dict):
+            result.append({
+                'key': key,
+                'type': 'nested',
+                'children': build_diff(dict1[key], dict2[key])
+            })
         elif dict1[key] == dict2[key]:
             result.append({'key': key, 'type': 'unchanged', 'value': dict1[key]})
         else:
-            if isinstance(dict1[key], dict) and isinstance(dict2[key], dict):
-                result.append({
-                    'key': key,
-                    'type': 'nested',
-                    'children': build_diff(dict1[key], dict2[key])
-                })
-            else:
-                result.append({
-                    'key': key, 
-                    'type': 'changed',
-                    'old_value': dict1[key], 
-                    'new_value': dict2[key]
-                })
+            result.append({
+                'key': key, 
+                'type': 'changed',
+                'old_value': dict1[key], 
+                'new_value': dict2[key]
+            })
     
     return result
 
 
-def format_stylish(diff, step=0):
+def format_stylish_complicated(diff, step=0):
     indent = '    ' * step
     lines = []
     
     for node in diff:
         if node['type'] == 'nested':
-            lines.append(f"{indent}  {node['key']}: {{")
-            lines.append(format_stylish(node['children'], step + 1))
-            lines.append(f"{indent}  }}")
+            lines.append(f"{indent}    {to_str(node['key'])}: {{")
+            lines.append(format_stylish_complicated(node['children'], step + 1))
+            lines.append(f"{indent}    }}")
         
         elif node['type'] == 'changed':
-            lines.append(f"{indent}- {node['key']}: {node['old_value']}")
-            lines.append(f"{indent}+ {node['key']}: {node['new_value']}")
+            old_val = format_value(node['old_value'], step + 1)
+            new_val = format_value(node['new_value'], step + 1)
+            lines.append(f"{indent}  - {to_str(node['key'])}: {old_val}")
+            lines.append(f"{indent}  + {to_str(node['key'])}: {new_val}")
         
         elif node['type'] == 'added':
-            lines.append(f"{indent}+ {node['key']}: {node['value']}")
+            val = format_value(node['value'], step + 1)
+            lines.append(f"{indent}  + {to_str(node['key'])}: {val}")
         
         elif node['type'] == 'removed':
-            lines.append(f"{indent}- {node['key']}: {node['value']}")
-        
+            val = format_value(node['value'], step + 1)
+            if val == '':
+                lines.append(f"{indent}  - {to_str(node['key'])}:")
+            else:
+                lines.append(f"{indent}  - {to_str(node['key'])}: {val}")
+
         elif node['type'] == 'unchanged':
-            lines.append(f"{indent}  {node['key']}: {node['value']}")
+            val = format_value(node['value'], step + 1)
+            lines.append(f"{indent}    {to_str(node['key'])}: {val}")
     
     return '\n'.join(lines)
+
+
+def format_stylish_basic(diff):
+    lines = []
+    
+    for node in diff:
+       
+        if node['type'] == 'changed':
+            lines.append(f"  - {str(node['key'])}: {str(node['old_value']).lower()}")
+            lines.append(f"  + {str(node['key'])}: {str(node['new_value']).lower()}")
+        
+        elif node['type'] == 'added':
+            lines.append(f"  + {str(node['key'])}: {str(node['value']).lower()}")
+        
+        elif node['type'] == 'removed':
+            lines.append(f"  - {str(node['key'])}: {str(node['value']).lower()}")
+
+        elif node['type'] == 'unchanged':
+            lines.append(f"    {str(node['key'])}: {str(node['value']).lower()}")
+    
+    return '\n'.join(lines)
+
+
+def to_str(arg):
+    if isinstance(arg, bool):
+        return str(arg).lower()
+    elif arg is None:
+        return 'null'
+    elif arg == '':
+        return ''
+    else:
+        return arg
+    
+
+def str_dict(elem_dict, step):
+    indent = '    ' * step
+    lines = []
+    for key, value in elem_dict.items():
+        if isinstance(value, dict):
+            lines.append(f"{indent}    {key}: {str_dict(value, step + 1)}")
+        else:
+            lines.append(f"{indent}    {key}: {to_str(value)}")
+    return '{\n' + '\n'.join(lines) + f'\n{indent}}}'
+
+
+def format_value(value, step):
+    if isinstance(value, dict):
+        return str_dict(value, step)
+    else:
+        return to_str(value)
