@@ -15,7 +15,7 @@ def get_reference_information():
     ...
 
 
-def generate_diff(data_file1=None, data_file2=None, storage=None):
+def generate_diff(data_file1=None, data_file2=None, storage=None, format_name='stylish'):
 
     if storage is None:
         storage = STORAGE_LINK
