@@ -4,6 +4,8 @@ from gen_diff.cli import welcome_user
 
 from .parser import arg_parser, data_parser
 
+import json
+
 STORAGE_LINK = Path(__file__).parent.parent / 'storage'
 
 
@@ -31,20 +33,15 @@ def generate_diff(data_file1=None, data_file2=None, storage=None, format_name='s
     diff = build_diff(parsed_data1, parsed_data2)
     
     if format_name == 'stylish':
-        if '\'type\': \'nested\'' in str(diff):
-            result = format_stylish_complicated(diff)
-        else:
-            result = format_stylish_basic(diff)
+        result = format_stylish_complicated(diff)
 
     if format_name == 'plain':
         result = get_format_plain_result(diff)
-        print(result)
         return result
 
     if format_name == 'json':
-        ...
-
-    print(f"{{\n{result}\n}}")
+        result = format_json(diff)
+        return result
 
     return f"{{\n{result}\n}}"
 
@@ -90,8 +87,14 @@ def format_stylish_complicated(diff, step=0):
         elif node['type'] == 'changed':
             old_val = format_value(node['old_value'], step + 1)
             new_val = format_value(node['new_value'], step + 1)
-            lines.append(f"{indent}  - {to_str(node['key'])}: {old_val}")
-            lines.append(f"{indent}  + {to_str(node['key'])}: {new_val}")
+            if old_val == '':
+                lines.append(f"{indent}  - {node['key']}:")
+            else:
+                lines.append(f"{indent}  - {to_str(node['key'])}: {old_val}")
+            if new_val == '':
+                lines.append(f"{indent}  + {node['key']}:")
+            else:
+                lines.append(f"{indent}  + {to_str(node['key'])}: {new_val}")
         
         elif node['type'] == 'added':
             val = format_value(node['value'], step + 1)
@@ -107,27 +110,6 @@ def format_stylish_complicated(diff, step=0):
         elif node['type'] == 'unchanged':
             val = format_value(node['value'], step + 1)
             lines.append(f"{indent}    {to_str(node['key'])}: {val}")
-    
-    return '\n'.join(lines)
-
-
-def format_stylish_basic(diff):
-    lines = []
-    
-    for node in diff:
-       
-        if node['type'] == 'changed':
-            lines.append(f"  - {str(node['key'])}: {str(node['old_value']).lower()}")
-            lines.append(f"  + {str(node['key'])}: {str(node['new_value']).lower()}")
-        
-        elif node['type'] == 'added':
-            lines.append(f"  + {str(node['key'])}: {str(node['value']).lower()}")
-        
-        elif node['type'] == 'removed':
-            lines.append(f"  - {str(node['key'])}: {str(node['value']).lower()}")
-
-        elif node['type'] == 'unchanged':
-            lines.append(f"    {str(node['key'])}: {str(node['value']).lower()}")
     
     return '\n'.join(lines)
 
@@ -201,3 +183,7 @@ def format_plain(diff, path=''):
 
 def get_format_plain_result(diff):
     return '\n'.join(format_plain(diff))
+
+
+def format_json(diff):
+    return json.dumps(diff, indent=2)

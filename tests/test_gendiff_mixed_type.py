@@ -5,7 +5,7 @@ from gen_diff.diff.gendiff import generate_diff
 TEST_DATA_DIR = Path(__file__).parent / 'test_data'
 
 
-def test_generate_diff_basic_json():
+def test_generate_diff_stylish_basic_json():
 
     # tests of the correct sorted order of all elements
 
@@ -53,7 +53,7 @@ def test_generate_diff_other_els_or_el_is_absent_json():
     assert '- follow: false' in result
 
 
-def test_generate_diff_basic_yaml():
+def test_generate_diff_stylish_basic_yaml():
 
     # tests of the correct sorted order of all elements
 
@@ -101,7 +101,7 @@ def test_generate_diff_other_els_or_el_is_absent_yaml():
     assert '- follow: false' in result
 
 
-def test_generate_diff_complicated_json():
+def test_generate_diff_stylish_complicated_json():
 
     # tests of the correct sorted order of all elements
 
@@ -123,7 +123,7 @@ def test_generate_diff_complicated_json():
         }
         setting6: {
             doge: {
-              - wow: 
+              - wow:
               + wow: so much
             }
             key: value
@@ -159,7 +159,7 @@ def test_generate_diff_complicated_json():
     assert result.strip() == expected.strip()
 
 
-def test_generate_diff_complicated_yaml():
+def test_generate_diff_stylish_complicated_yaml():
 
     # tests of the correct sorted order of all elements
 
@@ -181,7 +181,7 @@ def test_generate_diff_complicated_yaml():
         }
         setting6: {
             doge: {
-              - wow: 
+              - wow:
               + wow: so much
             }
             key: value
@@ -217,7 +217,7 @@ def test_generate_diff_complicated_yaml():
     assert result.strip() == expected.strip()
 
 
-def test_generate_diff_plain_json():
+def test_generate_diff_plain_format_json():
 
     # tests of the correct sorted order of all elements
 
@@ -243,7 +243,7 @@ Property 'group3' was added with value: [complex value]
     assert result.strip() == expected.strip()
 
 
-def test_generate_diff_plain_yaml():
+def test_generate_diff_plain_format_yaml():
 
     # tests of the correct sorted order of all elements
 
@@ -264,6 +264,268 @@ Property 'group1.baz' was updated. From 'bas' to 'bars'
 Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]
+'''
+
+    assert result.strip() == expected.strip()
+
+
+def test_generate_diff_json_format_json():
+
+    # tests of the correct sorted order of all elements
+
+    file5 = 'test_data_file5.json'
+    file6 = 'test_data_file6.json'
+    
+    result = generate_diff(file5, file6, TEST_DATA_DIR, 'json')
+    
+    expected = '''
+[
+  {
+    "key": "common",
+    "type": "nested",
+    "children": [
+      {
+        "key": "follow",
+        "type": "added",
+        "value": false
+      },
+      {
+        "key": "setting1",
+        "type": "unchanged",
+        "value": "Value 1"
+      },
+      {
+        "key": "setting2",
+        "type": "removed",
+        "value": 200
+      },
+      {
+        "key": "setting3",
+        "type": "changed",
+        "old_value": true,
+        "new_value": null
+      },
+      {
+        "key": "setting4",
+        "type": "added",
+        "value": "blah blah"
+      },
+      {
+        "key": "setting5",
+        "type": "added",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      {
+        "key": "setting6",
+        "type": "nested",
+        "children": [
+          {
+            "key": "doge",
+            "type": "nested",
+            "children": [
+              {
+                "key": "wow",
+                "type": "changed",
+                "old_value": "",
+                "new_value": "so much"
+              }
+            ]
+          },
+          {
+            "key": "key",
+            "type": "unchanged",
+            "value": "value"
+          },
+          {
+            "key": "ops",
+            "type": "added",
+            "value": "vops"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "group1",
+    "type": "nested",
+    "children": [
+      {
+        "key": "baz",
+        "type": "changed",
+        "old_value": "bas",
+        "new_value": "bars"
+      },
+      {
+        "key": "foo",
+        "type": "unchanged",
+        "value": "bar"
+      },
+      {
+        "key": "nest",
+        "type": "changed",
+        "old_value": {
+          "key": "value"
+        },
+        "new_value": "str"
+      }
+    ]
+  },
+  {
+    "key": "group2",
+    "type": "removed",
+    "value": {
+      "abc": 12345,
+      "deep": {
+        "id": 45
+      }
+    }
+  },
+  {
+    "key": "group3",
+    "type": "added",
+    "value": {
+      "deep": {
+        "id": {
+          "number": 45
+        }
+      },
+      "fee": 100500
+    }
+  }
+]
+'''
+
+    assert result.strip() == expected.strip()
+
+
+def test_generate_diff_json_format_yaml():
+
+    # tests of the correct sorted order of all elements
+
+    file5 = 'test_data_file5.yml'
+    file6 = 'test_data_file6.yml'
+    
+    result = generate_diff(file5, file6, TEST_DATA_DIR, 'json')
+    
+    expected = '''
+[
+  {
+    "key": "common",
+    "type": "nested",
+    "children": [
+      {
+        "key": "follow",
+        "type": "added",
+        "value": false
+      },
+      {
+        "key": "setting1",
+        "type": "unchanged",
+        "value": "Value 1"
+      },
+      {
+        "key": "setting2",
+        "type": "removed",
+        "value": 200
+      },
+      {
+        "key": "setting3",
+        "type": "changed",
+        "old_value": true,
+        "new_value": null
+      },
+      {
+        "key": "setting4",
+        "type": "added",
+        "value": "blah blah"
+      },
+      {
+        "key": "setting5",
+        "type": "added",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      {
+        "key": "setting6",
+        "type": "nested",
+        "children": [
+          {
+            "key": "doge",
+            "type": "nested",
+            "children": [
+              {
+                "key": "wow",
+                "type": "changed",
+                "old_value": "",
+                "new_value": "so much"
+              }
+            ]
+          },
+          {
+            "key": "key",
+            "type": "unchanged",
+            "value": "value"
+          },
+          {
+            "key": "ops",
+            "type": "added",
+            "value": "vops"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "group1",
+    "type": "nested",
+    "children": [
+      {
+        "key": "baz",
+        "type": "changed",
+        "old_value": "bas",
+        "new_value": "bars"
+      },
+      {
+        "key": "foo",
+        "type": "unchanged",
+        "value": "bar"
+      },
+      {
+        "key": "nest",
+        "type": "changed",
+        "old_value": {
+          "key": "value"
+        },
+        "new_value": "str"
+      }
+    ]
+  },
+  {
+    "key": "group2",
+    "type": "removed",
+    "value": {
+      "abc": 12345,
+      "deep": {
+        "id": 45
+      }
+    }
+  },
+  {
+    "key": "group3",
+    "type": "added",
+    "value": {
+      "deep": {
+        "id": {
+          "number": 45
+        }
+      },
+      "fee": 100500
+    }
+  }
+]
 '''
 
     assert result.strip() == expected.strip()
