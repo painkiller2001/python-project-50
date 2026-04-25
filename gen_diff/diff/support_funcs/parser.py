@@ -1,19 +1,7 @@
 import argparse
-import json
 from pathlib import Path
 
-import yaml
-
-
-def _read_json(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        return json.load(file)
-    
-    
-def _read_yaml(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        return yaml.safe_load(file)
-
+from .readers import _read_json, _read_yaml
 
 FORMAT_FUNC = {'.json': _read_json,
                '.yml': _read_yaml,
