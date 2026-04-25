@@ -41,6 +41,7 @@ def arg_parser():
     arg_parser = argparse.ArgumentParser(description="Compares two configuration files and shows a difference.")
     arg_parser.add_argument("first_file")
     arg_parser.add_argument("second_file")
+    arg_parser.add_argument("--format", default='stylish', help='output format: stylish, plain, json')
     args = arg_parser.parse_args()
     
-    return args.first_file, args.second_file
+    return args.first_file, args.second_file, args.format

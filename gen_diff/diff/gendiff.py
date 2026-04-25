@@ -21,7 +21,7 @@ def generate_diff(data_file1=None, data_file2=None, storage=None, format_name='s
         storage = STORAGE_LINK
 
     if data_file1 is None or data_file2 is None:
-        data_file1, data_file2 = arg_parser()  # file name parsing if args is empty
+        data_file1, data_file2, format_name = arg_parser()  # file name parsing if args is empty
 
     default_path1 = Path(data_file1) if Path(data_file1).is_absolute() else storage / data_file1
     default_path2 = Path(data_file2) if Path(data_file2).is_absolute() else storage / data_file2
@@ -30,10 +30,19 @@ def generate_diff(data_file1=None, data_file2=None, storage=None, format_name='s
 
     diff = build_diff(parsed_data1, parsed_data2)
     
-    if '\'type\': \'added\'' in str(diff):
-        result = format_stylish_complicated(diff)
-    else:
-        result = format_stylish_basic(diff)    
+    if format_name == 'stylish':
+        if '\'type\': \'nested\'' in str(diff):
+            result = format_stylish_complicated(diff)
+        else:
+            result = format_stylish_basic(diff)
+
+    if format_name == 'plain':
+        result = get_format_plain_result(diff)
+        print(result)
+        return result
+
+    if format_name == 'json':
+        ...
 
     print(f"{{\n{result}\n}}")
 
@@ -172,14 +181,17 @@ def format_plain(diff, path=''):
           lines.append(f'Property \'{full_path}\' was removed')
 
         if node['type'] == 'changed':
-          upd_old_value = (
-              '[complex value]' if isinstance(node['old_value'], dict | list)
-              else str(node['old_value']).lower() if isinstance(node['old_value'], bool) or node['old_value'] == 'null'
-              else f"'{str(node['old_value'])}'")
-          upd_new_value = (
-              '[complex value]' if isinstance(node['new_value'], dict | list)
-              else str(node['new_value']).lower() if isinstance(node['new_value'], bool) or node['new_value'] == 'null'
-              else f"'{str(node['new_value'])}'")
+          upd_old_value = ('null' if node['old_value'] is None
+                else '[complex value]' if isinstance(node['old_value'], (dict, list))
+                else str(node['old_value']).lower() if isinstance(node['old_value'], bool)
+                else f"'{str(node['old_value'])}'"
+                )
+          upd_new_value = ('null' if node['new_value'] is None
+                else '[complex value]' if isinstance(node['new_value'], (dict, list))
+                else str(node['new_value']).lower() if isinstance(node['new_value'], bool)
+                else f"'{str(node['new_value'])}'"
+                )
+
           lines.append(f'Property \'{full_path}\' was updated. From {upd_old_value} to {upd_new_value}')
 
         if 'children' in node and isinstance(node['children'], list):

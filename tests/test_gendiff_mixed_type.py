@@ -123,7 +123,7 @@ def test_generate_diff_complicated_json():
         }
         setting6: {
             doge: {
-              - wow:
+              - wow: 
               + wow: so much
             }
             key: value
@@ -181,7 +181,7 @@ def test_generate_diff_complicated_yaml():
         }
         setting6: {
             doge: {
-              - wow:
+              - wow: 
               + wow: so much
             }
             key: value
@@ -212,6 +212,58 @@ def test_generate_diff_complicated_yaml():
         fee: 100500
     }
 }
+'''
+
+    assert result.strip() == expected.strip()
+
+
+def test_generate_diff_plain_json():
+
+    # tests of the correct sorted order of all elements
+
+    file5 = 'test_data_file5.json'
+    file6 = 'test_data_file6.json'
+    
+    result = generate_diff(file5, file6, TEST_DATA_DIR, 'plain')
+    
+    expected = '''
+Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]
+'''
+
+    assert result.strip() == expected.strip()
+
+
+def test_generate_diff_plain_yaml():
+
+    # tests of the correct sorted order of all elements
+
+    file5 = 'test_data_file5.yml'
+    file6 = 'test_data_file6.yml'
+    
+    result = generate_diff(file5, file6, TEST_DATA_DIR, 'plain')
+    
+    expected = '''
+Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]
 '''
 
     assert result.strip() == expected.strip()
