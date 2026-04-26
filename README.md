@@ -28,4 +28,9 @@ Then, make sure the source files are in the project's directory 'STORAGE'.
 
 `comparing of complicated .json/.yaml in stylish format`          : <a href="https://asciinema.org/a/OcZXsHDMm6nF8kOI" target="_blank"><img src="https://asciinema.org/a/OcZXsHDMm6nF8kOI.svg" /></a>
 
+`comparing of complicated .json/.yaml in plain format`          : <a href="https://asciinema.org/a/FnrhhSX7wDDKJDrC" target="_blank"><img src="https://asciinema.org/a/FnrhhSX7wDDKJDrC.svg" /></a>
+
+`comparing of complicated .json/.yaml in json format`          : <a href="https://asciinema.org/a/qTj2j53CdlpsfrHa" target="_blank"><img src="https://asciinema.org/a/qTj2j53CdlpsfrHa.svg" /></a>
+
+
 
