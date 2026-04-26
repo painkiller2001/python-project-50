@@ -26,3 +26,6 @@ Then, make sure the source files are in the project's directory 'STORAGE'.
 
 `comparing of .yaml format`          : <a href="https://asciinema.org/a/9WcCIQx0ElRF7Ouw" target="_blank"><img src="https://asciinema.org/a/9WcCIQx0ElRF7Ouw.svg" /></a>
 
+`comparing of complicated .json/.yaml in stylish format`          : <a href="https://asciinema.org/a/OcZXsHDMm6nF8kOI" target="_blank"><img src="https://asciinema.org/a/OcZXsHDMm6nF8kOI.svg" /></a>
+
+
