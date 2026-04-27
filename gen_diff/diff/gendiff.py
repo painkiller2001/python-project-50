@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from gen_diff.cli import welcome_user
-
 from .formatters.json import format_json
 from .formatters.plain import get_format_plain_result
 from .formatters.stylish import format_stylish

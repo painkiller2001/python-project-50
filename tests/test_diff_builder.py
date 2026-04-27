@@ -1,7 +1,9 @@
 from gen_diff.diff.support_funcs.diff_builder import build_diff
 
+
 def test_empty():
     assert build_diff({}, {}) == []
+
 
 def test_unchanged():
     dict1 = {"a": 1, "b": 2}
@@ -12,6 +14,7 @@ def test_unchanged():
     ]
     assert build_diff(dict1, dict2) == expected
 
+
 def test_added():
     dict1 = {"a": 1}
     dict2 = {"a": 1, "b": 2}
@@ -20,6 +23,7 @@ def test_added():
         {"key": "b", "type": "added", "value": 2},
     ]
     assert build_diff(dict1, dict2) == expected
+
 
 def test_removed():
     dict1 = {"a": 1, "b": 2}
@@ -30,6 +34,7 @@ def test_removed():
     ]
     assert build_diff(dict1, dict2) == expected
 
+
 def test_changed():
     dict1 = {"a": 1, "b": 2}
     dict2 = {"a": 1, "b": 3}
@@ -38,6 +43,7 @@ def test_changed():
         {"key": "b", "type": "changed", "old_value": 2, "new_value": 3},
     ]
     assert build_diff(dict1, dict2) == expected
+
 
 def test_nested():
     dict1 = {"a": {"b": 1}}
@@ -52,6 +58,7 @@ def test_nested():
         }
     ]
     assert build_diff(dict1, dict2) == expected
+
 
 def test_all_types():
     dict1 = {

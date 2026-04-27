@@ -2,10 +2,12 @@ import json
 
 from gen_diff.diff.formatters.json import format_json
 
+
 def test_json_formatter_empty_diff():
     diff = []
     expected = "[]"
     assert format_json(diff) == expected
+
 
 def test_json_formatter_simple_diff():
     diff = [
@@ -14,6 +16,7 @@ def test_json_formatter_simple_diff():
     ]
     expected = json.dumps(diff, indent=2)
     assert format_json(diff) == expected
+
 
 def test_json_formatter_nested():
     diff = [

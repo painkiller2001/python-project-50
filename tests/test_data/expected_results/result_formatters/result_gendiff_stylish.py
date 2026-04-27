@@ -1,7 +1,7 @@
 
 
 def get_expected_result_stylish():
-  expected_result =   expected_result = '''
+    expected_result = expected_result = '''
 {
     common: {
       + follow: false
@@ -47,4 +47,4 @@ def get_expected_result_stylish():
     }
 }
 '''
-  return expected_result
+    return expected_result

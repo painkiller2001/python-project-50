@@ -16,6 +16,7 @@ def test_json_basic_reader():
     }
     assert data == expected
 
+
 def test_json_compl_reader():
     file_path = TEST_DATA_DIR / 'test_data_file5.json'
     data = _read_json(file_path)
@@ -58,6 +59,7 @@ def test_yml_basic_reader():
   "holdername": "Valery"
 }
     assert data == expected
+
 
 def test_yml_compl_reader():
     file_path = TEST_DATA_DIR / 'test_data_file6.yml'

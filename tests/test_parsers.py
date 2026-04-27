@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from gen_diff.diff.support_funcs.parser import data_parser
 
 TEST_DATA_DIR = Path(__file__).parent / 'test_data'
@@ -48,6 +49,7 @@ def test_data_parser_json_and_yaml():
     assert data1 == expected1
     assert data2 == expected2
 
+
 def test_data_parser_missed_file():
     file1 = TEST_DATA_DIR / 'no_such_file.json'
     file2 = TEST_DATA_DIR / 'test_data_file2.json'
@@ -57,8 +59,8 @@ def test_data_parser_missed_file():
     assert data1 is None
     assert data2 is None
 
+
 def test_data_parser_unsupported_extension():
-    wrong_format = TEST_DATA_DIR / 'test_data_file1.txt'
     file1 = TEST_DATA_DIR / 'test_data_file1.json'
     file2 = TEST_DATA_DIR / 'test_data_file2.txt'
     

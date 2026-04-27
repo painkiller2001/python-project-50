@@ -1,5 +1,4 @@
 
-
 def format_plain(diff, path=''):
     lines = []
     for node in diff:
@@ -10,28 +9,45 @@ def format_plain(diff, path=''):
             full_path = f"{path}.{current_key}" if path else current_key
 
             if node['type'] == 'added':
-                upd_value = (
-                    '[complex value]' if isinstance(node['value'], dict | list)
-                    else str(node['value']).lower() if isinstance(node['value'], bool) or node['value'] == 'null'
-                    else f"'{str(node['value'])}'")
-                lines.append(f'Property \'{full_path}\' was added with value: {upd_value}')
-            
+                val = node['value']
+                if isinstance(val, dict | list):
+                    upd_value = '[complex value]'
+                elif isinstance(val, bool) or val == 'null':
+                    upd_value = str(val).lower()
+                else:
+                    upd_value = f"'{str(val)}'"
+                lines.append(
+                    f"Property '{full_path}' was added with value: {upd_value}"
+                )
+
             if node['type'] == 'removed':
-                lines.append(f'Property \'{full_path}\' was removed')
+                lines.append(f"Property '{full_path}' was removed")
 
             if node['type'] == 'changed':
-                upd_old_value = ('null' if node['old_value'] is None
-                    else '[complex value]' if isinstance(node['old_value'], (dict, list))
-                    else str(node['old_value']).lower() if isinstance(node['old_value'], bool)
-                    else f"'{str(node['old_value'])}'"
-                    )
-                upd_new_value = ('null' if node['new_value'] is None
-                    else '[complex value]' if isinstance(node['new_value'], (dict, list))
-                    else str(node['new_value']).lower() if isinstance(node['new_value'], bool)
-                    else f"'{str(node['new_value'])}'"
-                    )
+                old = node['old_value']
+                if old is None:
+                    upd_old = 'null'
+                elif isinstance(old, (dict, list)):
+                    upd_old = '[complex value]'
+                elif isinstance(old, bool):
+                    upd_old = str(old).lower()
+                else:
+                    upd_old = f"'{str(old)}'"
 
-                lines.append(f'Property \'{full_path}\' was updated. From {upd_old_value} to {upd_new_value}')
+                new = node['new_value']
+                if new is None:
+                    upd_new = 'null'
+                elif isinstance(new, (dict, list)):
+                    upd_new = '[complex value]'
+                elif isinstance(new, bool):
+                    upd_new = str(new).lower()
+                else:
+                    upd_new = f"'{str(new)}'"
+
+                lines.append(
+                    f"Property '{full_path}' was updated. "
+                    f"From {upd_old} to {upd_new}"
+                )
 
             if 'children' in node and isinstance(node['children'], list):
                 lines.extend(format_plain(node['children'], full_path))

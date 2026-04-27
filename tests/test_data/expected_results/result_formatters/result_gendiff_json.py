@@ -2,6 +2,7 @@
 
 import json
 
+
 def get_expected_result_json():
     expected_object = [
         {
