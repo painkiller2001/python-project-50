@@ -11,10 +11,6 @@ from .support_funcs.parser import arg_parser, data_parser
 STORAGE_LINK = Path(__file__).parent.parent / 'storage'
 
 
-def main():
-    welcome_user()
-
-
 def generate_diff(data_file1=None, data_file2=None, storage=None, format_name='stylish'):
 
     if storage is None:
