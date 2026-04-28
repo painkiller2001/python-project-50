@@ -1,4 +1,6 @@
 
+COMPLEX_VALUE = '[complex value]'
+
 def format_plain(diff, path=''):
     lines = []
     for node in diff:
@@ -11,7 +13,7 @@ def format_plain(diff, path=''):
             if node['type'] == 'added':
                 val = node['value']
                 if isinstance(val, dict | list):
-                    upd_value = '[complex value]'
+                    upd_value = COMPLEX_VALUE
                 elif isinstance(val, bool) or val == 'null':
                     upd_value = str(val).lower()
                 else:
@@ -28,7 +30,7 @@ def format_plain(diff, path=''):
                 if old is None:
                     upd_old = 'null'
                 elif isinstance(old, (dict, list)):
-                    upd_old = '[complex value]'
+                    upd_old = COMPLEX_VALUE
                 elif isinstance(old, bool):
                     upd_old = str(old).lower()
                 else:
@@ -38,7 +40,7 @@ def format_plain(diff, path=''):
                 if new is None:
                     upd_new = 'null'
                 elif isinstance(new, (dict, list)):
-                    upd_new = '[complex value]'
+                    upd_new = COMPLEX_VALUE
                 elif isinstance(new, bool):
                     upd_new = str(new).lower()
                 else:
