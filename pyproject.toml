@@ -22,8 +22,5 @@ dev = [
     "ruff>=0.15.9",
 ]
 
-[tool.ruff.lint]
-max-complexity = 15
-
 [project.scripts]
 gendiff = "gen_diff.scripts.gen_diff:main"
