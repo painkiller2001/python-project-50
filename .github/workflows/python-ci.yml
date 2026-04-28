@@ -2,33 +2,41 @@ name: Python CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+      with:
+        fetch-depth: 0
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install ruff pytest pytest-cov
         pip install -e .
-    
+
     - name: Lint with ruff
       run: |
         ruff --version
-        ruff check . --show-source --statistics || true
-      continue-on-error: false
-    
-    - name: Test with pytest
-      run: pytest --cov=. --cov-report=term
+        ruff check . --show-source --statistics
+
+    - name: Run tests with coverage
+      run: |
+        pytest --cov=gen_diff --cov-report=xml --cov-report=term tests/
+
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
