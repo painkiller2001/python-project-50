@@ -1,6 +1,7 @@
 
 COMPLEX_VALUE = '[complex value]'
 
+
 def format_plain(diff, path=''):
     lines = []
     for node in diff:
