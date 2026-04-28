@@ -16,14 +16,11 @@ def build_diff(dict1, dict2):
                 'children': build_diff(dict1[key], dict2[key])
             })
         elif dict1[key] == dict2[key]:
-            result.append
-            (
-            {
-                'key': key, 
-                'type': 'unchanged', 
+            result.append({
+                'key': key,
+                'type': 'unchanged',
                 'value': dict1[key]
-                }
-            )
+            })
         else:
             result.append({
                 'key': key, 
