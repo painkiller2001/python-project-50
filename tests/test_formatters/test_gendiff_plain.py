@@ -2,9 +2,9 @@ from gendiff.diff.formatters.plain import get_format_plain_result
 
 
 def test_plain_added():
-    diff = [{"key": "b", "type": "added", "value": True}]
+    diff = [{"key": "b", "type": "added", "value": 2}]
     assert get_format_plain_result(diff) == (
-        "Property 'b' was added with value: true"
+        "Property 'b' was added with value: 2"
     )
 
 

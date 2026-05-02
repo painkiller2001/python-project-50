@@ -17,6 +17,8 @@ def format_plain(diff, path=''):
                     upd_value = COMPLEX_VALUE
                 elif isinstance(val, bool) or val == 'null':
                     upd_value = str(val).lower()
+                elif isinstance(val, int):
+                    upd_value = str(val).lower()
                 else:
                     upd_value = f"'{str(val)}'"
                 lines.append(
@@ -34,6 +36,8 @@ def format_plain(diff, path=''):
                     upd_old = COMPLEX_VALUE
                 elif isinstance(old, bool):
                     upd_old = str(old).lower()
+                elif isinstance(old, int):
+                    upd_value = str(old).lower()
                 else:
                     upd_old = f"'{str(old)}'"
 
@@ -44,6 +48,8 @@ def format_plain(diff, path=''):
                     upd_new = COMPLEX_VALUE
                 elif isinstance(new, bool):
                     upd_new = str(new).lower()
+                elif isinstance(new, int):
+                    upd_value = str(new).lower()
                 else:
                     upd_new = f"'{str(new)}'"
 
