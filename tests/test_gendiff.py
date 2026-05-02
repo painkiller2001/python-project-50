@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from gen_diff.diff.gendiff import generate_diff
+from gendiff.diff.gendiff import generate_diff
 from tests.test_data.expected_results.result_formatters import (
     result_gendiff_json,
     result_gendiff_plain,

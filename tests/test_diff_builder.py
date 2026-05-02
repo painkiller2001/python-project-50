@@ -1,4 +1,4 @@
-from gen_diff.diff.support_funcs.diff_builder import build_diff
+from gendiff.diff.support_funcs.diff_builder import build_diff
 
 
 def test_empty():

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from gen_diff.diff.support_funcs.readers import _read_json, _read_yaml
+from gendiff.diff.support_funcs.readers import _read_json, _read_yaml
 
 TEST_DATA_DIR = Path(__file__).parent / 'test_data'
 

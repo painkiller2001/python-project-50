@@ -1,4 +1,4 @@
-from gen_diff.diff.formatters.stylish import format_stylish
+from gendiff.diff.formatters.stylish import format_stylish
 
 
 def test_stylish_unchanged():

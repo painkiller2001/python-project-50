@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from gen_diff.diff.support_funcs.parser import data_parser
+from gendiff.diff.support_funcs.parser import data_parser
 
 TEST_DATA_DIR = Path(__file__).parent / 'test_data'
 

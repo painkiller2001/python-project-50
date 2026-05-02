@@ -1,4 +1,4 @@
-from gen_diff.cli import welcome_user
+from gendiff.cli import welcome_user
 
 
 def test_cli_file():

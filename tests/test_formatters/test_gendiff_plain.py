@@ -1,4 +1,4 @@
-from gen_diff.diff.formatters.plain import get_format_plain_result
+from gendiff.diff.formatters.plain import get_format_plain_result
 
 
 def test_plain_added():
