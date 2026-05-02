@@ -12,8 +12,8 @@ STORAGE_LINK = Path(__file__).parent.parent / 'storage'
 def generate_diff(
         data_file1=None, 
         data_file2=None, 
-        storage=None, 
-        format_name='stylish'
+        format_name='stylish',
+        storage=None
         ):
 
     if storage is None:

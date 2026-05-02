@@ -27,8 +27,8 @@ def test_generate_diff_stylish_basic_json():
     result = generate_diff(
         'test_data_file1.json',
         'test_data_file2.json',
-        TEST_DATA_DIR,
-        'stylish'
+        'stylish',
+        TEST_DATA_DIR
     )
     assert result.strip() == EXPECTED_STYLISH_BASIC.strip()
 
@@ -37,8 +37,8 @@ def test_generate_diff_stylish_basic_yaml():
     result = generate_diff(
         'test_data_file1.yml',
         'test_data_file2.yml',
-        TEST_DATA_DIR,
-        'stylish'
+        'stylish',
+        TEST_DATA_DIR
     )
     assert result.strip() == EXPECTED_STYLISH_BASIC.strip()
 
@@ -48,8 +48,8 @@ def test_generate_diff_stylish_complex_json():
     result = generate_diff(
         'test_data_file5.json',
         'test_data_file6.json',
-        TEST_DATA_DIR,
-        'stylish'
+        'stylish',
+        TEST_DATA_DIR
     )
     assert result.strip() == expected
 
@@ -59,8 +59,8 @@ def test_generate_diff_stylish_complex_yaml():
     result = generate_diff(
         'test_data_file5.yml',
         'test_data_file6.yml',
-        TEST_DATA_DIR,
-        'stylish'
+        'stylish',
+        TEST_DATA_DIR
     )
     assert result.strip() == expected
 
@@ -70,8 +70,8 @@ def test_generate_diff_plain_complex_json():
     result = generate_diff(
         'test_data_file5.json',
         'test_data_file6.json',
-        TEST_DATA_DIR,
-        'plain'
+        'plain',
+        TEST_DATA_DIR
     )
     assert result.strip() == expected
 
@@ -81,8 +81,8 @@ def test_generate_diff_plain_complex_yaml():
     result = generate_diff(
         'test_data_file5.yml',
         'test_data_file6.yml',
-        TEST_DATA_DIR,
-        'plain'
+        'plain',
+        TEST_DATA_DIR
     )
     assert result.strip() == expected
 
@@ -91,8 +91,8 @@ def test_generate_diff_json_complex_json():
     result = generate_diff(
         'test_data_file5.json',
         'test_data_file6.json',
-        TEST_DATA_DIR,
-        'json'
+        'json',
+        TEST_DATA_DIR
     )
     expected = get_expected_result_json()
     assert result.strip() == expected.strip()
@@ -103,7 +103,7 @@ def test_generate_diff_json_complex_yaml():
     result = generate_diff(
         'test_data_file5.yml',
         'test_data_file6.yml',
-        TEST_DATA_DIR,
-        'json'
+        'json',
+        TEST_DATA_DIR
     )
     assert result.strip() == expected
