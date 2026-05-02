@@ -38,18 +38,13 @@ def generate_diff(
     diff = build_diff(parsed_data1, parsed_data2)
     
     if format_name == 'stylish':
-        result = format_stylish(diff)
+        result = f"{{\n{format_stylish(diff)}\n}}"
+        return result
 
     if format_name == 'plain':
         result = get_format_plain_result(diff)
-        print(result)
         return result
 
     if format_name == 'json':
         result = format_json(diff)
-        print(result)
         return result
-
-    print(f"{{\n{result}\n}}")
-
-    return f"{{\n{result}\n}}"
