@@ -18,7 +18,7 @@ def format_stylish(diff, step=0):
             else:
                 lines.append(f"{indent}  - {to_str(node['key'])}: {old_val}")
             if new_val == '':
-                lines.append(f"{indent}  + {node['key']}:")
+                lines.append(f"{indent}  + {node['key']}: ")
             else:
                 lines.append(f"{indent}  + {to_str(node['key'])}: {new_val}")
         
