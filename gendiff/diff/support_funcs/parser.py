@@ -32,6 +32,7 @@ def arg_parser():
     arg_parser.add_argument("first_file")
     arg_parser.add_argument("second_file")
     arg_parser.add_argument(
+        "-f",
         "--format", 
         default='stylish', 
         help='output format: stylish, plain, json')
