@@ -17,7 +17,7 @@ def format_plain(diff, path=''):
                     upd_value = COMPLEX_VALUE
                 elif isinstance(val, bool) or val == 'null':
                     upd_value = str(val).lower()
-                elif isinstance(val, int):
+                elif isinstance(val, int | float):
                     upd_value = str(val).lower()
                 else:
                     upd_value = f"'{str(val)}'"
@@ -32,24 +32,24 @@ def format_plain(diff, path=''):
                 old = node['old_value']
                 if old is None:
                     upd_old = 'null'
-                elif isinstance(old, (dict, list)):
+                elif isinstance(old, dict | list):
                     upd_old = COMPLEX_VALUE
                 elif isinstance(old, bool):
                     upd_old = str(old).lower()
-                elif isinstance(old, int):
-                    upd_value = str(old).lower()
+                elif isinstance(old, int | float):
+                    upd_old = str(old).lower()
                 else:
                     upd_old = f"'{str(old)}'"
 
                 new = node['new_value']
                 if new is None:
                     upd_new = 'null'
-                elif isinstance(new, (dict, list)):
+                elif isinstance(new, dict | list):
                     upd_new = COMPLEX_VALUE
                 elif isinstance(new, bool):
                     upd_new = str(new).lower()
-                elif isinstance(new, int):
-                    upd_value = str(new).lower()
+                elif isinstance(new, int | float):
+                    upd_new = str(new).lower()
                 else:
                     upd_new = f"'{str(new)}'"
 
