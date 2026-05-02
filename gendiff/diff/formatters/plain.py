@@ -2,65 +2,63 @@
 COMPLEX_VALUE = '[complex value]'
 
 
+def _to_plain_value(value):
+    if isinstance(value, dict):
+        return COMPLEX_VALUE
+    if isinstance(value, bool):
+        return str(value).lower()
+    if value is None:
+        return 'null'
+    if isinstance(value, (int, float)):
+        return str(value)
+    return f"'{value}'"
+
+
+def _format_added(full_path, value):
+    return (
+        f"Property '{full_path}' was added with value: "
+        f"{_to_plain_value(value)}"
+    )
+
+
+def _format_changed(full_path, old, new):
+    old_val = _to_plain_value(old)
+    new_val = _to_plain_value(new)
+    return (
+        f"Property '{full_path}' was updated. "
+        f"From {old_val} to {new_val}"
+    )
+
+
+def _format_removed(full_path):
+    return f"Property '{full_path}' was removed"
+
+
+def _process_node(node, path):
+    full_path = f"{path}.{node['key']}" if path else node['key']
+    node_type = node['type']
+
+    if node_type == 'added':
+        return _format_added(full_path, node['value'])
+    if node_type == 'removed':
+        return _format_removed(full_path)
+    if node_type == 'changed':
+        return _format_changed(full_path, node['old_value'], node['new_value'])
+    if node_type == 'nested':
+        return format_plain(node['children'], full_path)
+    return None
+
+
 def format_plain(diff, path=''):
     lines = []
     for node in diff:
-        if isinstance(node, list):
-            lines.extend(format_plain(node, path))
+        result = _process_node(node, path)
+        if result is None:
+            continue
+        if isinstance(result, list):
+            lines.extend(result)
         else:
-            current_key = node['key']
-            full_path = f"{path}.{current_key}" if path else current_key
-
-            if node['type'] == 'added':
-                val = node['value']
-                if isinstance(val, dict | list):
-                    upd_value = COMPLEX_VALUE
-                elif isinstance(val, bool) or val == 'null':
-                    upd_value = str(val).lower()
-                elif isinstance(val, int | float):
-                    upd_value = str(val).lower()
-                else:
-                    upd_value = f"'{str(val)}'"
-                lines.append(
-                    f"Property '{full_path}' was added with value: {upd_value}"
-                )
-
-            if node['type'] == 'removed':
-                lines.append(f"Property '{full_path}' was removed")
-
-            if node['type'] == 'changed':
-                old = node['old_value']
-                if old is None:
-                    upd_old = 'null'
-                elif isinstance(old, dict | list):
-                    upd_old = COMPLEX_VALUE
-                elif isinstance(old, bool):
-                    upd_old = str(old).lower()
-                elif isinstance(old, int | float):
-                    upd_old = str(old).lower()
-                else:
-                    upd_old = f"'{str(old)}'"
-
-                new = node['new_value']
-                if new is None:
-                    upd_new = 'null'
-                elif isinstance(new, dict | list):
-                    upd_new = COMPLEX_VALUE
-                elif isinstance(new, bool):
-                    upd_new = str(new).lower()
-                elif isinstance(new, int | float):
-                    upd_new = str(new).lower()
-                else:
-                    upd_new = f"'{str(new)}'"
-
-                lines.append(
-                    f"Property '{full_path}' was updated. "
-                    f"From {upd_old} to {upd_new}"
-                )
-
-            if 'children' in node and isinstance(node['children'], list):
-                lines.extend(format_plain(node['children'], full_path))
-
+            lines.append(result)
     return lines
 
 
