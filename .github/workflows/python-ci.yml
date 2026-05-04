@@ -33,11 +33,7 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        pytest --cov=gendiff --cov-report=xml:coverage.xml tests/
-
-    - name: Fix coverage paths for SonarCloud
-      run: |
-        sed -i 's|/home/runner/work/python-project-50/python-project-50/||g' coverage.xml
+        make test-coverage
     
     - name: Upload coverage report (for debugging)
       uses: actions/upload-artifact@v4

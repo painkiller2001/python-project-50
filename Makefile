@@ -9,3 +9,6 @@ package-install:
 
 lint:
 	uv run ruff check
+
+test-coverage:
+	uv run pytest --cov=gendiff --cov-report=xml:coverage.xml
