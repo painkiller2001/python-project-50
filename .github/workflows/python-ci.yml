@@ -33,7 +33,7 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        make test-coverage
+        pytest --cov=gendiff --cov-report=xml:coverage.xml
     
     - name: Upload coverage report (for debugging)
       uses: actions/upload-artifact@v4
