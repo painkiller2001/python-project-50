@@ -26,3 +26,6 @@ dev = [
 
 [project.scripts]
 gendiff = "gendiff.scripts.gen_diff:main"
+
+[tool.coverage.run]
+relative_files = true
